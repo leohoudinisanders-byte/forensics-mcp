@@ -3,7 +3,8 @@
   "name": "leohoudinisanders-byte/forensics-mcp",
   "description": "x402-payable on-chain forensics tools: token verdicts, settle-safe RWA screens, wallet trust screens",
   "repository": {
-    "url": "https://github.com/leohoudinisanders-byte/forensics-mcp"
+    "url": "https://github.com/leohoudinisanders-byte/forensics-mcp",
+    "source": "github"
   },
   "version": "1.0.0",
   "remotes": [
