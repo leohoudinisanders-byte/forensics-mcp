@@ -1,8 +1,10 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "leohoudinisanders-byte/forensics-mcp",
-  "description": "On-chain Forensics: x402-payable MCP tools for AI agents. Token verdict cards ($0.02), pre-trade settle-safe screens for tokenized equities and RWAs ($0.02), wallet trust screens ($0.05), ERC-20 forensics profiles ($0.05), and composed due-diligence memos ($0.25+). Base, Ethereum, and XRPL. Payment per tool call via x402 (USDC on Base, EIP-3009): a paid tools/call returns HTTP 402 with PAYMENT-REQUIRED until the client signs and retries with X-PAYMENT. The forensics_info tool is free. Payments settle to the operator wallet; no API keys, no signup.",
-  "repository": { "url": "https://github.com/leohoudinisanders-byte/forensics-mcp" },
+  "description": "x402-payable on-chain forensics tools: token verdicts, settle-safe RWA screens, wallet trust screens",
+  "repository": {
+    "url": "https://github.com/leohoudinisanders-byte/forensics-mcp"
+  },
   "version": "1.0.0",
   "remotes": [
     {
