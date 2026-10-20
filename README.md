@@ -27,6 +27,11 @@ No API keys, no signup — the payment IS the auth.
 
 Any x402-capable client (e.g. [x402 fetch](https://docs.x402.org)) handles this automatically. The tools are also indexed in the Coinbase x402 Bazaar as MCP resources (type `mcp`, transport `streamable-http`).
 
+## Listed in the official MCP Registry
+
+Published at [registry.modelcontextprotocol.io](https://registry.modelcontextprotocol.io) as
+`io.github.leohoudinisanders-byte/forensics-mcp` v1.0.0 (remote, streamable-http).
+
 ## Related
 
 - Landing: https://leohoudinisanders-byte.github.io/onchain-forensics/
