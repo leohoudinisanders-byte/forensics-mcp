@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "leohoudinisanders-byte/forensics-mcp",
+  "name": "io.github.leohoudinisanders-byte/forensics-mcp",
   "description": "x402-payable on-chain forensics tools: token verdicts, settle-safe RWA screens, wallet trust screens",
   "repository": {
     "url": "https://github.com/leohoudinisanders-byte/forensics-mcp",
