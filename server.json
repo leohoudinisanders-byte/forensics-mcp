@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
   "name": "io.github.leohoudinisanders-byte/forensics-mcp",
   "description": "Token due-diligence for AI agents: letter-grade verdicts, mint activity, settlement safety, token and wallet profiles. x402-payable on Base.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "repository": { "url": "https://github.com/leohoudinisanders-byte/forensics-mcp", "source": "github" },
   "packages": [
     {
