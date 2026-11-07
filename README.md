@@ -1,5 +1,7 @@
 # On-chain Forensics MCP server
 
+[![Glama score](https://glama.ai/mcp/servers/leohoudinisanders-byte/forensics-mcp/badges/score.svg)](https://glama.ai/mcp/servers/leohoudinisanders-byte/forensics-mcp)
+
 Token due-diligence tools for any MCP-capable agent: ask "should I touch this token" and get a
 letter grade with a reason instead of a price chart. Zero dependencies, stdio transport, no
 install step.
