@@ -49,6 +49,28 @@ LangChain / Vercel AI SDK / custom runtimes: the server speaks newline-delimited
 stdio, so it drops into any MCP client implementation. Methods implemented: `initialize`,
 `tools/list`, `tools/call`, `ping`.
 
+## Free developer key (10,000 calls/month)
+
+```bash
+curl -X POST https://api.onchainforensics.dev/functions/devKeys \
+  -H "Content-Type: application/json" -d '{"email":"you@example.com"}'
+```
+
+The response contains a key shown once. Set it and every tool call becomes a plain data read with
+no payment signature:
+
+```json
+{
+  "mcpServers": {
+    "onchain-forensics": {
+      "command": "npx",
+      "args": ["-y", "github:leohoudinisanders-byte/forensics-mcp"],
+      "env": { "FORENSICS_DEV_KEY": "fxk_..." }
+    }
+  }
+}
+```
+
 ## Payment
 
 Every tool calls the free trial tier first. When that route's daily allowance is spent, the paid
@@ -66,6 +88,7 @@ that cannot still learns the exact cost.
 | `FORENSICS_BASE_URL` | `https://api.onchainforensics.dev/functions` |
 | `FORENSICS_CHAIN` | `base` |
 | `FORENSICS_TIMEOUT_MS` | `45000` |
+| `FORENSICS_DEV_KEY` | empty (falls back to free trial, then the x402 challenge) |
 
 ## License
 
