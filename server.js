@@ -21,7 +21,11 @@
 const BASE = process.env.FORENSICS_BASE_URL || "https://api.onchainforensics.dev/functions";
 const DEFAULT_CHAIN = process.env.FORENSICS_CHAIN || "base";
 const TIMEOUT_MS = Number(process.env.FORENSICS_TIMEOUT_MS || 45000);
-const VERSION = "1.0.0";
+// A free developer key (10,000 calls/month, from https://api.onchainforensics.dev/functions/devKeys)
+// turns every tool call into a no-payment data read. Without it the free-trial allowance and then
+// the x402 challenge apply.
+const DEV_KEY = (process.env.FORENSICS_DEV_KEY || "").trim();
+const VERSION = "1.1.0";
 
 const TOOLS = [
   {
@@ -147,7 +151,9 @@ async function callRoute(tool, args) {
   const timer = setTimeout(() => ac.abort(), TIMEOUT_MS);
   let res;
   try {
-    res = await fetch(url, { signal: ac.signal, headers: { "User-Agent": `forensics-mcp/${VERSION}` } });
+    const headers = { "User-Agent": `forensics-mcp/${VERSION}` };
+    if (DEV_KEY) headers["X-Dev-Key"] = DEV_KEY;
+    res = await fetch(url, { signal: ac.signal, headers });
   } finally {
     clearTimeout(timer);
   }
@@ -169,7 +175,7 @@ async function callRoute(tool, args) {
       ? JSON.stringify({ payment_required: { price_usd: accept ? Number(accept.amount) / 1e6 : null, network: accept?.network, asset: accept?.asset, pay_to: accept?.payTo, scheme: accept?.scheme }, challenge }, null, 2)
       : bodyText;
     return textResult(
-      `${line}\nThe free trial allowance for this route is spent. Sign the x402 challenge below with any x402 client and retry, or ask the human to fund a prepaid credit key (POST ${BASE}/forensicsCredits {\"plan\":\"pack1\"}).\n\n${payload}`
+      `${line}\nThe free trial allowance for this route is spent. Three ways forward: set FORENSICS_DEV_KEY to a free developer key (10,000 calls/month, POST ${BASE}/devKeys with an email), sign the x402 challenge below with any x402 client and retry, or buy a prepaid pack (POST ${BASE}/forensicsCredits).\n\n${payload}`
     );
   }
 
@@ -184,7 +190,8 @@ function handleToolCall(id, name, args) {
 
   if (!tool.route) {
     const catalog = TOOLS.map((t) => `- ${t.name}: ${t.price}\n  ${t.description.split(". ")[0]}.`).join("\n");
-    return result(id, textResult(`On-chain Forensics tools:\n${catalog}\n\nBase URL: ${BASE}\nFree trial: one call per route per day, no key needed.\nPaid: x402 in USDC on Base, or a prepaid key from ${BASE}/forensicsCredits.`));
+    return result(id, textResult(`On-chain Forensics tools:\n${catalog}\n\nBase URL: ${BASE}\nFree trial: one call per route per day, no key needed.\nFree developer key: POST ${BASE}/devKeys {"email":"you@example.com"} for 10,000 calls a month, then set FORENSICS_DEV_KEY.
+Paid: x402 in USDC on Base, or a prepaid key from ${BASE}/forensicsCredits.`));
   }
 
   const missing = (tool.inputSchema.required || []).filter((k) => !args || args[k] === undefined || args[k] === "");
