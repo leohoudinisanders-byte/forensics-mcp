@@ -3,13 +3,19 @@
   "name": "io.github.leohoudinisanders-byte/forensics-mcp",
   "description": "Token due-diligence for AI agents: letter-grade verdicts, mint activity, settlement safety, token and wallet profiles. x402-payable on Base.",
   "version": "1.1.0",
-  "repository": { "url": "https://github.com/leohoudinisanders-byte/forensics-mcp", "source": "github" },
+  "repository": {
+    "url": "https://github.com/leohoudinisanders-byte/forensics-mcp",
+    "source": "github"
+  },
   "packages": [
     {
       "registryType": "npm",
-      "identifier": "github:leohoudinisanders-byte/forensics-mcp",
-      "transport": { "type": "stdio" },
-      "runtimeHint": "npx -y github:leohoudinisanders-byte/forensics-mcp"
+      "identifier": "onchain-forensics-mcp",
+      "version": "1.1.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "runtimeHint": "npx -y onchain-forensics-mcp"
     }
   ]
 }
