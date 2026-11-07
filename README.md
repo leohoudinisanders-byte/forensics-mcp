@@ -5,8 +5,12 @@ letter grade with a reason instead of a price chart. Zero dependencies, stdio tr
 install step.
 
 ```bash
-npx github:leohoudinisanders-byte/forensics-mcp
+npx -y onchain-forensics-mcp
 ```
+
+Published on npm as [`onchain-forensics-mcp`](https://www.npmjs.com/package/onchain-forensics-mcp).
+If the registry is unreachable, the same code installs straight from GitHub:
+`npx -y github:leohoudinisanders-byte/forensics-mcp`.
 
 ## Tools
 
@@ -31,7 +35,7 @@ Claude Desktop (`~/Library/Application Support/Claude/claude_desktop_config.json
   "mcpServers": {
     "onchain-forensics": {
       "command": "npx",
-      "args": ["-y", "github:leohoudinisanders-byte/forensics-mcp"]
+      "args": ["-y", "onchain-forensics-mcp"]
     }
   }
 }
@@ -40,7 +44,7 @@ Claude Desktop (`~/Library/Application Support/Claude/claude_desktop_config.json
 Claude Code:
 
 ```bash
-claude mcp add onchain-forensics -- npx -y github:leohoudinisanders-byte/forensics-mcp
+claude mcp add onchain-forensics -- npx -y onchain-forensics-mcp
 ```
 
 Cursor (`.cursor/mcp.json`) and any other client use the same `command` + `args` pair.
@@ -64,7 +68,7 @@ no payment signature:
   "mcpServers": {
     "onchain-forensics": {
       "command": "npx",
-      "args": ["-y", "github:leohoudinisanders-byte/forensics-mcp"],
+      "args": ["-y", "onchain-forensics-mcp"],
       "env": { "FORENSICS_DEV_KEY": "fxk_..." }
     }
   }
