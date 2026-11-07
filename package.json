@@ -1,6 +1,6 @@
 {
   "name": "@onchainforensics/mcp",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "On-chain Forensics MCP server: x402-payable token due-diligence tools for AI agents (verdict, mints, settlesafe, token, wallet). Zero dependencies.",
   "type": "module",
   "bin": {
@@ -26,5 +26,6 @@
     "base",
     "ai-agents"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "mcpName": "dev.onchainforensics/forensics-mcp"
 }
