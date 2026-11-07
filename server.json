@@ -1,16 +1,15 @@
 {
-  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
   "name": "io.github.leohoudinisanders-byte/forensics-mcp",
-  "description": "x402-payable on-chain forensics tools: token verdicts, settle-safe RWA screens, wallet trust screens",
-  "repository": {
-    "url": "https://github.com/leohoudinisanders-byte/forensics-mcp",
-    "source": "github"
-  },
+  "description": "Token due-diligence for AI agents: letter-grade verdicts, mint activity, settlement safety, token and wallet profiles. x402-payable on Base.",
   "version": "1.0.0",
-  "remotes": [
+  "repository": { "url": "https://github.com/leohoudinisanders-byte/forensics-mcp", "source": "github" },
+  "packages": [
     {
-      "type": "streamable-http",
-      "url": "https://solene-fa2010da.base44.app/functions/forensicsMcp"
+      "registryType": "npm",
+      "identifier": "github:leohoudinisanders-byte/forensics-mcp",
+      "transport": { "type": "stdio" },
+      "runtimeHint": "npx -y github:leohoudinisanders-byte/forensics-mcp"
     }
   ]
 }
