@@ -1,14 +1,5 @@
-# Publish the MCP server to npm with no long-lived token.
-#
-# npm is retiring bypass-2FA tokens for direct publishing in January 2027. This workflow
-# authenticates with OpenID Connect instead: GitHub mints a short-lived identity token for
-# this specific repo + workflow, npm verifies it against the trusted publisher configured at
-# https://www.npmjs.com/package/onchain-forensics-mcp/access and hands back a one-time publish
-# credential. No secret ever exists in this repo.
-#
-# Also attaches a provenance attestation, so anyone can verify the published tarball was built
-# from this commit by this workflow.
-
+# Publishes onchain-forensics-mcp to npm AND refreshes the MCP registry entry, with no stored
+# secret: both registries accept a short-lived GitHub OIDC identity token minted for this repo.
 name: publish
 
 on:
@@ -18,31 +9,36 @@ on:
 
 permissions:
   contents: read
-  id-token: write # required for OIDC / trusted publishing
+  id-token: write
 
 jobs:
-  publish:
+  npm:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
-
-      # Trusted publishing needs npm >= 11.5.1; the runner ships an older npm.
-      - name: Upgrade npm
+      - name: Upgrade npm (trusted publishing needs npm >= 11.5.1)
         run: npm install -g npm@latest
-
-      # Fail before publishing if the server cannot complete a handshake.
       - name: Smoke test the server
         run: |
           printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05"}}' | timeout 30 node server.js | tee /tmp/out.json
           grep -q '"serverInfo"' /tmp/out.json
-
-      - name: Show what will be published
-        run: npm publish --dry-run --access public
-
-      - name: Publish
+      - name: Publish to npm with provenance
         run: npm publish --provenance --access public
+
+  registry:
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install mcp-publisher
+        run: |
+          curl -sL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
+          ./mcp-publisher --help > /dev/null
+      - name: Authenticate to the MCP registry with GitHub OIDC
+        run: ./mcp-publisher login github-oidc
+      - name: Publish server.json
+        run: ./mcp-publisher publish
