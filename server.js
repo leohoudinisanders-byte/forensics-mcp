@@ -25,7 +25,7 @@ const TIMEOUT_MS = Number(process.env.FORENSICS_TIMEOUT_MS || 45000);
 // turns every tool call into a no-payment data read. Without it the free-trial allowance and then
 // the x402 challenge apply.
 const DEV_KEY = (process.env.FORENSICS_DEV_KEY || "").trim();
-const VERSION = "1.1.0";
+const VERSION = "1.2.0";
 
 const TOOLS = [
   {
@@ -52,7 +52,7 @@ const TOOLS = [
       type: "object",
       properties: {
         address: { type: "string", description: "Token contract address" },
-        chain: { type: "string", description: "Chain, default base" }
+        chain: { type: "string", description: "Chain to read: base (default), ethereum, solana, linea, polygon, arbitrum, optimism, bnb or avalanche." }
       },
       required: ["address"]
     },
@@ -68,7 +68,7 @@ const TOOLS = [
       type: "object",
       properties: {
         asset: { type: "string", description: "Ticker or address, for example bTSLA, NVDA, or 0x..." },
-        chain: { type: "string", description: "Chain, default base" }
+        chain: { type: "string", description: "Chain to read: base (default), ethereum, solana, linea, polygon, arbitrum, optimism, bnb or avalanche." }
       },
       required: ["asset"]
     },
@@ -84,7 +84,7 @@ const TOOLS = [
       type: "object",
       properties: {
         address: { type: "string", description: "Token contract address" },
-        chain: { type: "string", description: "Chain, default base" }
+        chain: { type: "string", description: "Chain to read: base (default), ethereum, solana, linea, polygon, arbitrum, optimism, bnb or avalanche." }
       },
       required: ["address"]
     },
@@ -100,7 +100,7 @@ const TOOLS = [
       type: "object",
       properties: {
         address: { type: "string", description: "Wallet address" },
-        chain: { type: "string", description: "Chain, default base" }
+        chain: { type: "string", description: "Chain to read: base (default), ethereum, solana, linea, polygon, arbitrum, optimism, bnb or avalanche." }
       },
       required: ["address"]
     },
@@ -116,6 +116,32 @@ const TOOLS = [
     route: null
   }
 ];
+
+// Display titles and read-only annotations. The annotations tell a client these tools only READ
+// public chain state: nothing is signed, nothing is written, and the same arguments return the
+// same answer, so a client can auto-approve them instead of prompting the user each time.
+const TOOL_TITLES = {
+  token_verdict: "Token verdict",
+  token_mints: "Mint activity check",
+  settlesafe_check: "Settle-safe screen",
+  token_profile: "Token profile",
+  wallet_profile: "Wallet profile",
+  forensics_catalog: "Forensics catalog and prices",
+};
+
+function toolMeta(tool) {
+  const title = TOOL_TITLES[tool.name] || tool.name;
+  return {
+    title,
+    annotations: {
+      title,
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: true,
+    },
+  };
+}
 
 function send(msg) {
   process.stdout.write(JSON.stringify(msg) + "\n");
@@ -220,13 +246,13 @@ process.stdin.on("data", (chunk) => {
       result(msg.id, {
         protocolVersion: msg.params?.protocolVersion || "2024-11-05",
         capabilities: { tools: {} },
-        serverInfo: { name: "onchain-forensics", version: VERSION }
+        serverInfo: { name: "onchain-forensics", version: VERSION, title: "On-chain Forensics", websiteUrl: "https://onchainforensics.dev", icons: [{ src: "https://onchainforensics.dev/icon-512.png", mimeType: "image/png", sizes: ["512x512"] }] }
       });
       continue;
     }
     if (msg.method === "notifications/initialized" || msg.method === "initialized") continue;
     if (msg.method === "ping") { result(msg.id, {}); continue; }
-    if (msg.method === "tools/list") { result(msg.id, { tools: TOOLS.map(({ route, params, price, ...t }) => t) }); continue; }
+    if (msg.method === "tools/list") { result(msg.id, { tools: TOOLS.map(({ route, params, price, ...t }) => ({ ...t, ...toolMeta(t) })) }); continue; }
     if (msg.method === "tools/call") {
       handleToolCall(msg.id, msg.params?.name, msg.params?.arguments || {});
       continue;
