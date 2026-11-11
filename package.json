@@ -1,6 +1,6 @@
 {
   "name": "onchain-forensics-mcp",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "mcpName": "dev.onchainforensics/forensics-mcp",
   "description": "On-chain Forensics MCP server: x402-payable token due-diligence tools for AI agents (verdict, mints, settlesafe, token, wallet). Zero dependencies.",
   "keywords": [
