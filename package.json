@@ -1,20 +1,8 @@
 {
   "name": "onchain-forensics-mcp",
   "version": "1.2.0",
+  "mcpName": "dev.onchainforensics/forensics-mcp",
   "description": "On-chain Forensics MCP server: x402-payable token due-diligence tools for AI agents (verdict, mints, settlesafe, token, wallet). Zero dependencies.",
-  "type": "module",
-  "bin": {
-    "forensics-mcp": "server.js"
-  },
-  "main": "server.js",
-  "engines": {
-    "node": ">=18"
-  },
-  "files": [
-    "server.js",
-    "README.md",
-    "server.json"
-  ],
   "keywords": [
     "mcp",
     "model-context-protocol",
@@ -27,5 +15,25 @@
     "ai-agents"
   ],
   "license": "MIT",
-  "mcpName": "dev.onchainforensics/forensics-mcp"
+  "homepage": "https://onchainforensics.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leohoudinisanders-byte/forensics-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/leohoudinisanders-byte/forensics-mcp/issues"
+  },
+  "bin": {
+    "forensics-mcp": "server.js"
+  },
+  "main": "server.js",
+  "files": [
+    "server.js",
+    "README.md",
+    "server.json"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "type": "module"
 }
