@@ -3,7 +3,7 @@
   "name": "io.github.leohoudinisanders-byte/forensics-mcp",
   "title": "On-chain Forensics",
   "description": "Token due diligence for AI agents: a letter grade before a buy, mint checks, settle-safe screens.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "websiteUrl": "https://onchainforensics.dev",
   "icons": [
     {
