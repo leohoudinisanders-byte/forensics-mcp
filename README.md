@@ -23,7 +23,25 @@ If the registry is unreachable, the same code installs straight from GitHub:
 | `settlesafe_check` | Can this token actually settle? Registry canonicality, ERC-20 readability, pause state. | free trial, then $0.02 |
 | `token_profile` | Full readable profile: supply, decimals, holders, top wallets. | free trial, then $0.05 |
 | `wallet_profile` | Is this wallet real, and what does it hold? | free trial, then $0.05 |
+| `watch_token` | Stop asking: watch a token and email the human when its grade drops. | free (3 contracts), $29/30d for 50 + same-day alerts |
+| `alerts_feed` | What turned risky lately? Public grade-change feed across Base and Ethereum. | free |
 | `forensics_catalog` | What else can this server answer, and what does it cost? Free, no network call. | free |
+
+## Alerts: the one tool that keeps answering after the agent stops
+
+Every other tool answers a question once. `watch_token` subscribes the human to the same
+grading engine, so a downgrade reaches them without another call:
+
+- **Free:** up to 3 EVM contracts, one digest a day at 07:00 America/Chicago, nothing sent when
+  nothing changed.
+- **$29 / 30 days:** 50 contracts plus same-day mail on a full-grade drop or a hard red flag
+  (mint authority back, liquidity drained, holder concentration spike). $75 / 90 days.
+- Payment is USDC on Base over x402, no account and no card. Paying with an email that is
+  already watching extends the subscription instead of stacking a second one.
+- The public feed is free forever, day-by-day: <https://onchainforensics.dev/alerts-feed.html>
+  (JSON and RSS at `/functions/alertsFeed`).
+
+The tool asks only for an email address and contract addresses. It never invents a recipient.
 
 Grades are computed by deterministic rules over live chain reads. No LLM sits in the decision
 path, so the same token grades the same way twice.
@@ -99,3 +117,4 @@ that cannot still learns the exact cost.
 ## License
 
 MIT
+
