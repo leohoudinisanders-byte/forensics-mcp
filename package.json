@@ -1,8 +1,8 @@
 {
   "name": "onchain-forensics-mcp",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "mcpName": "dev.onchainforensics/forensics-mcp",
-  "description": "On-chain Forensics MCP server: x402-payable token due-diligence tools for AI agents (verdict, mints, settlesafe, token, wallet). Zero dependencies.",
+  "description": "On-chain Forensics MCP server: x402-payable token due-diligence tools plus free watchlist and public risk feed for AI agents (verdict, mints, settlesafe, token, wallet, watch_token, alerts_feed). Zero dependencies.",
   "keywords": [
     "mcp",
     "model-context-protocol",
@@ -12,7 +12,9 @@
     "defi",
     "due-diligence",
     "base",
-    "ai-agents"
+    "ai-agents",
+    "alerts",
+    "webhooks"
   ],
   "license": "MIT",
   "homepage": "https://onchainforensics.dev",
@@ -37,3 +39,4 @@
   },
   "type": "module"
 }
+
