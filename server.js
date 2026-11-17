@@ -25,7 +25,7 @@ const TIMEOUT_MS = Number(process.env.FORENSICS_TIMEOUT_MS || 45000);
 // turns every tool call into a no-payment data read. Without it the free-trial allowance and then
 // the x402 challenge apply.
 const DEV_KEY = (process.env.FORENSICS_DEV_KEY || "").trim();
-const VERSION = "1.2.0";
+const VERSION = "1.2.2";
 
 const TOOLS = [
   {
@@ -109,6 +109,45 @@ const TOOLS = [
     price: "free trial first; paid calls are $0.05"
   },
   {
+    name: "watch_token",
+    description:
+      "Stop asking and get told. Adds an email watch on a token so the human hears about it when the grade drops, instead of paying for the same lookup again later. Free: up to 3 EVM contracts with a daily digest. Paid $29 per 30 days: 50 contracts plus same-day mail on grade drops and hard red flags. Returns the alerts key and what happens next; the human must give you their email address, never invent one.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        email: { type: "string", description: "The human's email. Ask for it; do not guess." },
+        addresses: { type: "array", items: { type: "string" }, description: "EVM contract addresses to watch, 1 to 3 on the free tier (up to 50 paid)" }
+      },
+      required: ["email", "addresses"]
+    },
+    route: "alertsFree",
+    params: (a) => ({
+      email: String(a.email || ""),
+      watchlist: (Array.isArray(a.addresses) ? a.addresses : [a.addresses]).filter(Boolean).join(",")
+    }),
+    price: "free for 3 contracts; $29/30d raises it to 50 with same-day alerts"
+  },
+  {
+    name: "alerts_feed",
+    description:
+      "What turned risky lately, free. Returns the tokens whose grade dropped across Base and Ethereum in a recent window, with the grade it moved from and to, plus per-chain and per-day totals. Use it to see what this engine flags before spending anything, or to report recent risk to a human.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        days: { type: "number", description: "Window in days, 1 to 30, default 3" },
+        chain: { type: "string", enum: ["base", "ethereum"], description: "Optional chain filter" },
+        limit: { type: "number", description: "Max changed tokens to return, default 25, max 200" }
+      }
+    },
+    route: "alertsFeed",
+    params: (a) => ({
+      days: String(a.days || 3),
+      chain: String(a.chain || ""),
+      limit: String(a.limit || 25)
+    }),
+    price: "free, no key, no payment"
+  },
+  {
     name: "forensics_catalog",
     description:
       "List every available On-chain Forensics tool and its price. Free, no network call. Use when you need to know what else this server can answer or what a call will cost.",
@@ -126,16 +165,20 @@ const TOOL_TITLES = {
   settlesafe_check: "Settle-safe screen",
   token_profile: "Token profile",
   wallet_profile: "Wallet profile",
+  watch_token: "Watch a token and get told when it turns",
+  alerts_feed: "Public grade-change feed",
   forensics_catalog: "Forensics catalog and prices",
 };
 
 function toolMeta(tool) {
   const title = TOOL_TITLES[tool.name] || tool.name;
+  // watch_token creates a subscription and sends email, so it is not a read-only tool.
+  const writes = tool.name === "watch_token";
   return {
     title,
     annotations: {
       title,
-      readOnlyHint: true,
+      readOnlyHint: !writes,
       destructiveHint: false,
       idempotentHint: true,
       openWorldHint: true,
@@ -271,3 +314,4 @@ process.stdin.on("end", () => {
   };
   check();
 });
+
